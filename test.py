@@ -28,6 +28,12 @@ import zipfile
 from craft import CRAFT
 
 from collections import OrderedDict
+
+modelGeneral = 'weights/craft_mlt_25k.pth'
+modelIC15 = 'weights/craft_ic15_20k.pth'
+modelLinkRefiner = 'weights/craft_ic15_20k.pth'
+modelSyndata = 'weights/Syndata.pth'
+modelSyndata = 'weights/91.pth'
 def copyStateDict(state_dict):
     if list(state_dict.keys())[0].startswith("module"):
         start_idx = 1
@@ -159,8 +165,9 @@ if __name__ == '__main__':
     for k, image_path in enumerate(image_list):
         print("Test image {:d}/{:d}: {:s}".format(k+1, len(image_list), image_path), end='\r')
         image = imgproc.loadImage(image_path)
-        ret,image = cv2.threshold(image,220,255,cv2.THRESH_BINARY)
-        image = cv2.resize(image, (0, 0), fx =5, fy =5)
+        # image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        # ret,image = cv2.threshold(image,127,255,cv2.THRESH_BINARY)
+        # image = cv2.resize(image, (0, 0), fx =2.5, fy =2.5)
         bboxes, polys, score_text = test_net(net, image, args.text_threshold, args.link_threshold, args.low_text, args.cuda, args.poly, refine_net)
 
         # save score text
